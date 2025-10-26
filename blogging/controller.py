@@ -50,3 +50,16 @@ class Controller:
                 return blog
         
         return None  #when its not found return nothing
+    
+    def retrieve_blogs(self, name):
+
+        if self.current_user is None: #checking if already logged in
+            return None
+        
+        #searchING for blogs that contain the name substring
+        matching_blogs = []
+        for blog in self.blogs:
+            if name in blog.name:  # Partial match
+                matching_blogs.append(blog)
+        
+        return matching_blogs
