@@ -51,15 +51,45 @@ class Controller:
         
         return None  #when its not found return nothing
     
-    def retrieve_blogs(self, name):
+    def retrieve_blogs(self, name):#stroy 5
 
         if self.current_user is None: #checking if already logged in
             return None
         
-        #searchING for blogs that contain the name substring
+        #searching for blogs that contain the name substring
         matching_blogs = []
         for blog in self.blogs:
             if name in blog.name:  # Partial match
                 matching_blogs.append(blog)
         
         return matching_blogs
+    
+    def update_blog(self, old_id, new_id, name, url, email): #story 6
+
+        if self.current_user is None: #checking if already logged in
+            return False
+        
+        #finding the blog to update
+        blog_to_update = None
+        for blog in self.blogs:
+            if blog.blog_id == old_id:
+                blog_to_update = blog
+                break
+        
+        #if it didn't find any blog then return false
+        if blog_to_update is None:
+            return False
+        
+        #checking if new_id conflicts with existing blogs
+        if old_id != new_id:  #only check if ID is changing
+            for blog in self.blogs:
+                if blog.blog_id == new_id and blog != blog_to_update: #except the one we're updating
+                    return False  #new ID already exists
+        
+        #update the blog attributes
+        blog_to_update.blog_id = new_id
+        blog_to_update.name = name
+        blog_to_update.url = url
+        blog_to_update.email = email
+        
+        return True
