@@ -21,6 +21,7 @@ class Controller:
     def logout(self):#story2
         if self.current_user is not None:#if logged in then u can log out
             self.current_user = None
+            self.current_blog = None #added this line for story 9
             return True
         return False
     
@@ -69,6 +70,10 @@ class Controller:
         if self.current_user is None: #checking if already logged in
             return False
         
+         #checkinng to delete the current blog
+        if self.current_blog and self.current_blog.blog_id == old_id:
+            return False  #can't delete current blog
+        
         #finding the blog to update
         blog_to_update = None
         for blog in self.blogs:
@@ -100,6 +105,10 @@ class Controller:
         if self.current_user is None: #checking if already logged in
             return False
         
+        #checkinng to delete the current blog
+        if self.current_blog and self.current_blog.blog_id == blog_id:
+            return False  #can't delete current blog
+        
         #finding the blog to delete
         for i, blog in enumerate(self.blogs):
             if blog.blog_id == blog_id:
@@ -117,3 +126,18 @@ class Controller:
         
         #return a copy of the blogs list
         return self.blogs
+
+    def set_current_blog(self, blog_id): #story 9
+        #finding the blog by ID
+        blog = self.search_blog(blog_id)  #use the search from story 4
+        if blog is not None:
+            self.current_blog = blog
+            return True
+        return False
+
+    def get_current_blog(self):
+        return self.current_blog
+
+    def unset_current_blog(self):
+        self.current_blog = None
+        return True
