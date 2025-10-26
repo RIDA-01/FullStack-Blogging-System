@@ -39,4 +39,14 @@ class Controller:
         self.blogs.append(new_blog)
         return new_blog
         
-  
+    def search_blog(self, blog_id):#story 4
+        
+        if self.current_user is None: #checking if already logged in
+            return None
+        
+        #search for blog by ID
+        for blog in self.blogs:
+            if blog.blog_id == blog_id:
+                return blog
+        
+        return None  #when its not found return nothing
