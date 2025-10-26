@@ -93,3 +93,20 @@ class Controller:
         blog_to_update.email = email
         
         return True
+    
+
+    def delete_blog(self, blog_id):
+
+        if self.current_user is None: #checking if already logged in
+            return False
+        
+        #finding the blog to delete
+        for i, blog in enumerate(self.blogs):
+            if blog.blog_id == blog_id:
+                #remove the blog from the list
+                del self.blogs[i]
+                return True
+            
+          #if it didn't find any blog then return false
+        return False
+    
