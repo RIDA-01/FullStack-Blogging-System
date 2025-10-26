@@ -95,7 +95,7 @@ class Controller:
         return True
     
 
-    def delete_blog(self, blog_id):
+    def delete_blog(self, blog_id): #story 7
 
         if self.current_user is None: #checking if already logged in
             return False
@@ -109,4 +109,11 @@ class Controller:
             
           #if it didn't find any blog then return false
         return False
-    
+        
+    def list_blogs(self): #story 8
+
+        if self.current_user is None:  #checking if already logged in
+            return None
+        
+        #return a copy of the blogs list
+        return self.blogs
