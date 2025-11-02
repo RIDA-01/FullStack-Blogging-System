@@ -48,6 +48,25 @@ class Blog:
                 matches.append(p)
         return sorted(matches, key=lambda p: p.post_id)  # ascending
 
+    def update_post(self, post_id, title, text):
+        for p in self.posts:
+            if p.post_id == post_id:
+                p.title = title
+                p.text = text
+                return True
+        return False
+
+    def delete_post(self, post_id):
+        for i, p in enumerate(self.posts):
+            if p.post_id == post_id:
+                del self.posts[i]
+                return True
+        return False
+
+    def list_posts(self):
+        # Return DESC by code
+        return sorted(self.posts, key=lambda p: p.post_id, reverse=True)
+    
 
     """
     END
