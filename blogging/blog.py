@@ -1,4 +1,8 @@
+"""
+    I added this Line !
+"""
 from blogging.post import Post
+
 
 class Blog:
     def __init__(self, blog_id, name, url, email):
@@ -17,6 +21,8 @@ class Blog:
                 self.name == other.name and
                 self.url == other.url and
                 self.email == other.email)
+    
+
        
     def __str__(self):
         """String representation of the Blog"""
