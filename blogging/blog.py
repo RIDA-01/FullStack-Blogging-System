@@ -23,6 +23,36 @@ class Blog:
                 self.email == other.email)
     
 
+    """
+    Functions I added to Blog file:
+    """
+    def create_post(self, title, text):
+        # Codes start at 1 and auto-increment per blog
+        p = Post(self.post_counter, title, text)
+        self.posts.append(p)
+        self.post_counter += 1
+        return p
+
+    def search_post(self, post_id):
+        for p in self.posts:
+            if p.post_id == post_id:
+                return p
+        return None
+
+    def retrieve_posts(self, query):
+        # Case-insensitive search in title OR text, return ASC by code
+        q = (query or "").lower()
+        matches = []
+        for p in self.posts:
+            if q in p.title.lower() or q in p.text.lower():
+                matches.append(p)
+        return sorted(matches, key=lambda p: p.post_id)  # ascending
+
+
+    """
+    END
+    """
+
        
     def __str__(self):
         """String representation of the Blog"""
