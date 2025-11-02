@@ -1,3 +1,5 @@
+from blogging.post import Post
+
 class Blog:
     def __init__(self, blog_id, name, url, email):
         self.blog_id = blog_id

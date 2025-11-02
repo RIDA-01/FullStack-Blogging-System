@@ -1,4 +1,6 @@
 from blogging.blog import Blog
+from blogging.post import Post
+
 
 
 class Controller:
@@ -141,3 +143,56 @@ class Controller:
     def unset_current_blog(self):
         self.current_blog = None
         return True
+    
+    """
+    Post functions:
+    """
+    def create_post(self, title: str, text: str):
+        if self.current_user is None:
+            return None
+        blog = self.get_current_blog()
+        if blog is None:
+            return None
+        return blog.create_post(title, text)
+    
+    def search_post(self, post_id: int):
+        if self.current_user is None:
+            return None
+        blog = self.get_current_blog()
+        if blog is None:
+            return None
+        return blog.search_post(post_id)
+
+
+    def retrieve_posts(self, query: str):
+        if self.current_user is None:
+            return None
+        blog = self.get_current_blog()
+        if blog is None:
+          return None
+        return blog.retrieve_posts(query)
+    
+
+    def update_post(self, post_id: int, title: str, text: str):
+        if self.current_user is None:
+            return False
+        blog = self.get_current_blog()
+        if blog is None:
+            return False
+        return blog.update_post(post_id, title, text)
+
+    def delete_post(self, post_id: int):
+        if self.current_user is None:
+            return False
+        blog = self.get_current_blog()
+        if blog is None:
+            return False
+        return blog.delete_post(post_id)
+
+    def list_posts(self):
+        if self.current_user is None:
+            return None
+        blog = self.get_current_blog()
+        if blog is None:
+            return None
+        return blog.list_posts()
