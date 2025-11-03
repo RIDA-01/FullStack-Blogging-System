@@ -20,7 +20,6 @@ class Post:
         # If all checks passed, they are equal
         return True
 
-    
     def __repr__(self):
         return f"Post(post_id={self.post_id!r}, title={self.title!r})"
 
