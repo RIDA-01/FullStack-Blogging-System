@@ -127,7 +127,10 @@ class Controller:
             return None
         
         #return a copy of the blogs list
-        return self.blogs
+        #  **
+        #  I added list before it to make sure it will return copy not the main one, Plz dounle check it RIDA ;)
+        #  **
+        return list(self.blogs)
 
     def set_current_blog(self, blog_id): #story 9
         #finding the blog by ID
@@ -137,7 +140,12 @@ class Controller:
             return True
         return False
 
+
+
+    # I add one line in Case it is none
     def get_current_blog(self):
+        if self.current_user is None:
+            return None
         return self.current_blog
 
     def unset_current_blog(self):

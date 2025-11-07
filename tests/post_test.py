@@ -1,9 +1,8 @@
 import unittest
 from blogging.post import Post
 
-class TestPost(unittest.TestCase):
-    def test_creation_sets_basic_fields(self):
-        # I create a post; I expect fields to be stored exactly.
+class PostTest(unittest.TestCase):
+    def test_post_creation(self):
         p = Post(1, "Hello", "World")
         self.assertEqual(p.post_id, 1)
         self.assertEqual(p.title, "Hello")
