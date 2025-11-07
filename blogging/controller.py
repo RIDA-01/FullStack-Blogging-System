@@ -147,52 +147,58 @@ class Controller:
     """
     Post functions:
     """
-    def create_post(self, title: str, text: str):
+    def create_post(self, title: str, text: str): #story 10
+        #Must be logged in and have a current blog selected
         if self.current_user is None:
             return None
         blog = self.get_current_blog()
         if blog is None:
             return None
-        return blog.create_post(title, text)
+        # # Delegate to current blog's create_post method
+        return blog.create_post(title, text) #The newly created post, or None if requirements not met
     
     def search_post(self, post_id: int):
+        ## Must be logged in and have a current blog selected
         if self.current_user is None:
             return None
         blog = self.get_current_blog()
         if blog is None:
             return None
-        return blog.search_post(post_id)
+        return blog.search_post(post_id) #The found post, or None if not found or requirements not met
 
 
-    def retrieve_posts(self, query: str):
+    def retrieve_posts(self, query: str): #story 11
         if self.current_user is None:
             return None
         blog = self.get_current_blog()
         if blog is None:
           return None
-        return blog.retrieve_posts(query)
+        return blog.retrieve_posts(query)#Matching posts sorted by ID, or None if requirements not met
     
 
-    def update_post(self, post_id: int, title: str, text: str):
+    def update_post(self, post_id: int, title: str, text: str): #story 12
+         # Must be logged in and have a current blog selected
         if self.current_user is None:
             return False
         blog = self.get_current_blog()
         if blog is None:
             return False
-        return blog.update_post(post_id, title, text)
+        return blog.update_post(post_id, title, text) #True if post was updated, False otherwise
 
-    def delete_post(self, post_id: int):
+    def delete_post(self, post_id: int): #story 13
+        # Must be logged in and have a current blog selected
         if self.current_user is None:
             return False
         blog = self.get_current_blog()
         if blog is None:
             return False
-        return blog.delete_post(post_id)
+        return blog.delete_post(post_id) #True if post was deleted, False otherwise
 
-    def list_posts(self):
+    def list_posts(self): #story 14
+         # Must be logged in and have a current blog selected
         if self.current_user is None:
             return None
         blog = self.get_current_blog()
         if blog is None:
             return None
-        return blog.list_posts()
+        return blog.list_posts() #All posts sorted by ID descending, or None if requirements not met
