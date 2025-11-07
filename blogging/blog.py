@@ -1,8 +1,4 @@
-"""
-    I added this Line !
-"""
 from blogging.post import Post
-
 
 class Blog:
     def __init__(self, blog_id, name, url, email):
@@ -22,10 +18,6 @@ class Blog:
                 self.url == other.url and
                 self.email == other.email)
     
-
-    """
-    Functions I added to Blog file:
-    """
     def create_post(self, title, text): #text (str): The content of the post
         # Codes start at 1 and auto-increment per blog
         p = Post(self.post_counter, title, text)
@@ -67,12 +59,7 @@ class Blog:
     def list_posts(self):
         # Return DESC by code
         return sorted(self.posts, key=lambda p: p.post_id, reverse=True)
-    
 
-    """
-    END
-    """
-    
        
     def __str__(self):
         """String representation of the Blog"""
