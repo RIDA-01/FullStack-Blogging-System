@@ -148,6 +148,7 @@ class Controller:
     Post functions:
     """
     def create_post(self, title: str, text: str):
+        
         if self.current_user is None:
             return None
         blog = self.get_current_blog()

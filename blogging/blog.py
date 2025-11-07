@@ -46,13 +46,14 @@ class Blog:
         for p in self.posts:
             if q in p.title.lower() or q in p.text.lower():
                 matches.append(p)
-        return sorted(matches, key=lambda p: p.post_id)  # ascending
-
+        return sorted(matches, key=lambda p: p.post_id) 
+    
     def update_post(self, post_id, title, text):
         for p in self.posts:
             if p.post_id == post_id:
                 p.title = title
                 p.text = text
+                p.touch()
                 return True
         return False
 
@@ -64,7 +65,6 @@ class Blog:
         return False
 
     def list_posts(self):
-        # Return DESC by code
         return sorted(self.posts, key=lambda p: p.post_id, reverse=True)
     
 
