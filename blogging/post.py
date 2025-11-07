@@ -1,38 +1,42 @@
-from datetime import datetime
+import datetime
+
 
 class Post:
+   
+    
     def __init__(self, post_id, title, text):
+        # Core post content and identity
         self.post_id = post_id
         self.title = title
         self.text = text
-
-        # timestamps: required by the spec (created now; updated starts the same)
-        now = datetime.now()
-        self.created_at = now
-        self.updated_at = now
-
-    def touch(self):
-        """Update the timestamp when the post is edited."""
-        self.updated_at = datetime.now()
+        # Timestamps required by assignment specification
+        self.created_at = datetime.datetime.now()
+        self.updated_at = self.created_at  # Initially same as creation time
     
     def __eq__(self, other):
-        # Check if other is a Post object
-        if not isinstance(other, Post):
-            return False
-
-        # Compare attributes
-        if self.post_id != other.post_id:
-            return False
-        if self.title != other.title:
-            return False
-        if self.text != other.text:
-            return False
-
-        # If all checks passed, they are equal
-        return True
-
-    def __repr__(self):
-        return f"Post(post_id={self.post_id!r}, title={self.title!r})"
-
+        """
+        Compare posts for equality based on ID, title, and content.
+        Used by tests to verify post data matches expected values.
+        """
+        return (
+            isinstance(other, Post)
+            and self.post_id == other.post_id
+            and self.title == other.title
+            and self.text == other.text
+        )
+    
+    def update(self, title, text):
+        """
+        Update post content and refresh the update timestamp.
+        """
+        self.title = title
+        self.text = text
+        self.updated_at = datetime.datetime.now()
+    
     def __str__(self):
-        return f"[{self.post_id}] {self.title}"
+        """User-friendly string representation"""
+        return f"Post #{self.post_id}: {self.title}"
+    
+    def __repr__(self):
+        """Developer-friendly detailed representation"""
+        return f"Post(id={self.post_id}, title='{self.title}', created={self.created_at})"

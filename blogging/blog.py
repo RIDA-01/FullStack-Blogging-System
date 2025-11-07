@@ -26,52 +26,53 @@ class Blog:
     """
     Functions I added to Blog file:
     """
-    def create_post(self, title, text):
+    def create_post(self, title, text): #text (str): The content of the post
         # Codes start at 1 and auto-increment per blog
         p = Post(self.post_counter, title, text)
         self.posts.append(p)
-        self.post_counter += 1
-        return p
+        self.post_counter += 1 
+        return p  # Returns: Post: The newly created Post object
+    
 
-    def search_post(self, post_id):
+    def search_post(self, post_id): #Find a specific post in this blog by its ID.
         for p in self.posts:
             if p.post_id == post_id:
                 return p
-        return None
+        return None #The found post object, or None if not found
 
-    def retrieve_posts(self, query):
+    def retrieve_posts(self, query): # Search for posts containing the query string in title or text.
         # Case-insensitive search in title OR text, return ASC by code
         q = (query or "").lower()
         matches = []
         for p in self.posts:
             if q in p.title.lower() or q in p.text.lower():
                 matches.append(p)
-        return sorted(matches, key=lambda p: p.post_id) 
-    
+        return sorted(matches, key=lambda p: p.post_id)  # List of Post objects matching the query, sorted by post ID ascending
+
     def update_post(self, post_id, title, text):
+        # # Search through all posts to find the one with matching ID
         for p in self.posts:
             if p.post_id == post_id:
-                p.title = title
-                p.text = text
-                p.touch()
-                return True
-        return False
+                p.update(title, text)  # Use Post's method to handle timestamps
+                return True# Successfully updated
+        return False # # Return false if no post found with the given ID
 
     def delete_post(self, post_id):
         for i, p in enumerate(self.posts):
             if p.post_id == post_id:
                 del self.posts[i]
-                return True
-        return False
+                return True 
+        return False #True if post was found and deleted, False otherwise
 
     def list_posts(self):
+        # Return DESC by code
         return sorted(self.posts, key=lambda p: p.post_id, reverse=True)
     
 
     """
     END
     """
-
+    
        
     def __str__(self):
         """String representation of the Blog"""
