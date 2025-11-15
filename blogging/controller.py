@@ -1,6 +1,7 @@
 from blogging.blog import Blog
 from blogging.post import Post
 import hashlib
+from blogging.dao.blog_dao_json import BlogDAOJSON
 from blogging.exception.duplicate_login_exception import DuplicateLoginException
 from blogging.exception.invalid_login_exception import InvalidLoginException
 from blogging.exception.invalid_logout_exception import InvalidLogoutException
@@ -14,7 +15,7 @@ class Controller:
         self.current_user = None
         # Hardcoded user for now - from the test
         self.users = self.load_users()  # Load from file instead of hardcoding
-        self.blogs = []  #store all Blog objects
+        self.blog_dao = BlogDAOJSON()  # Replaced self.blogs with blog_dao
         self.current_blog = None \
         
     def load_users(self):
@@ -75,75 +76,58 @@ class Controller:
         if self.current_user is None:   #checking if already logged in
             raise IllegalAccessException()
 
-        #checking if blog_id already exists
-        for blog in self.blogs:
-            if blog.blog_id == blog_id:
-                 raise IllegalOperationException()  # Exception instead of None
-
-        #Creating new blog and adding to collection
+         
+        # Create Blog object first, then delegate to DAO
         new_blog = Blog(blog_id, name, url, email)
-        self.blogs.append(new_blog)
-        return new_blog
+        result = self.blog_dao.create_blog(new_blog)
+    
+        if result is None:
+            raise IllegalOperationException()  # Blog ID already exists
+    
+        return result
         
     def search_blog(self, blog_id):#story 4
         
         if self.current_user is None: #checking if already logged in
             raise IllegalAccessException()  # Exception instead of None
         
-        #search for blog by ID
-        for blog in self.blogs:
-            if blog.blog_id == blog_id:
-                return blog
-        
-        return None  #when its not found return nothing
+        return self.blog_dao.search_blog(blog_id)  # Delegate to DAO
     
     def retrieve_blogs(self, name):#stroy 5
 
         if self.current_user is None: #checking if already logged in
             raise IllegalAccessException()
         
-        #searching for blogs that contain the name substring
-        matching_blogs = []
-        for blog in self.blogs:
-            if name in blog.name:  # Partial match
-                matching_blogs.append(blog)
-        
-        return matching_blogs
+        return self.blog_dao.retrieve_blogs(name)  # Delegate to DAO
     
-    def update_blog(self, old_id, new_id, name, url, email): #story 6
-
-        if self.current_user is None: #checking if already logged in
+    def update_blog(self, old_id, new_id, name, url, email):
+        if self.current_user is None:
             raise IllegalAccessException()
         
-         #checkinng to delete the current blog
+        # Check if trying to update current blog
         if self.current_blog and self.current_blog.blog_id == old_id:
-            raise IllegalOperationException()  # Can't update current blog
+            raise IllegalOperationException()
         
-        #finding the blog to update
-        blog_to_update = None
-        for blog in self.blogs:
-            if blog.blog_id == old_id:
-                blog_to_update = blog
-                break
-        
-        #if it didn't find any blog then return false
+        # Find the blog to update using DAO
+        blog_to_update = self.blog_dao.search_blog(old_id)
         if blog_to_update is None:
-            raise IllegalOperationException()  # Exception instead of False
+            raise IllegalOperationException()
         
-        #checking if new_id conflicts with existing blogs
-        if old_id != new_id:  #only check if ID is changing
-            for blog in self.blogs:
-                if blog.blog_id == new_id and blog != blog_to_update: #except the one we're updating
-                     raise IllegalOperationException()  # Exception instead of False  #new ID already exists
+        # Check if new_id conflicts with existing blogs
+        if old_id != new_id:
+            if self.blog_dao.search_blog(new_id) is not None:
+                raise IllegalOperationException()
         
-        #update the blog attributes
-        blog_to_update.blog_id = new_id
-        blog_to_update.name = name
-        blog_to_update.url = url
-        blog_to_update.email = email
+        # Create updated blog object
+        updated_blog = Blog(new_id, name, url, email)
         
-        return True
-    
+        # Use DAO to perform the update - this should return the updated blog
+        result = self.blog_dao.update_blog(old_id, updated_blog)
+        
+        if result is None:
+            raise IllegalOperationException()
+        
+        return result  
 
     def delete_blog(self, blog_id): #story 7
 
@@ -154,23 +138,19 @@ class Controller:
         if self.current_blog and self.current_blog.blog_id == blog_id:
             raise IllegalOperationException()  # Can't update current blog  #can't delete current blog
         
-        #finding the blog to delete
-        for i, blog in enumerate(self.blogs):
-            if blog.blog_id == blog_id:
-                #remove the blog from the list
-                del self.blogs[i]
-                return True
-            
-          #if it didn't find any blog then return false
-        raise IllegalOperationException()  # Exception instead of False
+         # Delegate to DAO
+        success = self.blog_dao.delete_blog(blog_id)
+        if not success:
+            raise IllegalOperationException()
+    
+        return True
         
     def list_blogs(self): #story 8
 
         if self.current_user is None:  #checking if already logged in
             raise IllegalAccessException()
         
-        #return a copy of the blogs list
-        return self.blogs
+        return self.blog_dao.list_blogs()  # Delegate to DAO
 
     def set_current_blog(self, blog_id): #story 9
         if self.current_user is None:
