@@ -34,9 +34,13 @@ class Post:
         self.updated_at = datetime.datetime.now()
     
     def __str__(self):
-        """User-friendly string representation"""
+        """
+        User-friendly string representation
+        """
         return f"Post #{self.post_id}: {self.title}"
     
     def __repr__(self):
-        """Developer-friendly detailed representation"""
+        """
+        Developer-friendly detailed representation
+        """
         return f"Post(id={self.post_id}, title='{self.title}', created={self.created_at})"

@@ -1,3 +1,4 @@
+from blogging.dao.post_dao_pickle import PostDAOPickle
 from blogging.post import Post
 
 class Blog:
@@ -6,11 +7,17 @@ class Blog:
         self.name = name
         self.url = url
         self.email = email
-        self.posts = []  # For Yasaman's posts later
-        self.post_counter = 1  # For auto-incrementing post IDs
+        # DAO responsible for managing this blog's posts (in memory + file).
+        self.post_dao = PostDAOPickle(self)
+        # Initialize post_counter based on existing posts (for persistence).
+        if self.post_dao.posts:
+            max_id = max(p.post_id for p in self.post_dao.posts)
+            self.post_counter = max_id + 1
+        else:
+            self.post_counter = 1
     
     def __eq__(self, other):
-       # Compare two Blog objects for equality
+        """ Compare two Blog objects for equality """
         if not isinstance(other, Blog):
             return False
         return (self.blog_id == other.blog_id and 
@@ -18,47 +25,55 @@ class Blog:
                 self.url == other.url and
                 self.email == other.email)
     
-    def create_post(self, title, text): #text (str): The content of the post
-        # Codes start at 1 and auto-increment per blog
+    def create_post(self, title, text): 
+        """
+        Create a new Post for this blog and return it
+        """
         p = Post(self.post_counter, title, text)
-        self.posts.append(p)
         self.post_counter += 1 
-        return p  # Returns: Post: The newly created Post object
+        return self.post_dao.create_post(p)
     
 
-    def search_post(self, post_id): #Find a specific post in this blog by its ID.
-        for p in self.posts:
-            if p.post_id == post_id:
-                return p
-        return None #The found post object, or None if not found
+    def search_post(self, post_id):
+        """ 
+        Find a specific post in this blog by its ID
+        Delegate post search to the DAO 
+        """
+        return self.post_dao.search_post(post_id)
 
-    def retrieve_posts(self, query): # Search for posts containing the query string in title or text.
-        # Case-insensitive search in title OR text, return ASC by code
-        q = (query or "").lower()
-        matches = []
-        for p in self.posts:
-            if q in p.title.lower() or q in p.text.lower():
-                matches.append(p)
-        return sorted(matches, key=lambda p: p.post_id)  # List of Post objects matching the query, sorted by post ID ascending
+    def retrieve_posts(self, query):
+        """
+        Search for posts containing the query string in title or text.
+        Case-insensitive search in title OR text, return ASC by code
+        """
+        return self.post_dao.retrieve_posts(query)
+
 
     def update_post(self, post_id, title, text):
-        # # Search through all posts to find the one with matching ID
-        for p in self.posts:
-            if p.post_id == post_id:
-                p.update(title, text)  # Use Post's method to handle timestamps
-                return True# Successfully updated
-        return False # # Return false if no post found with the given ID
+        """
+        Search through all posts to find the one with matching ID
+        """
+        # for p in self.posts:
+        #     if p.post_id == post_id:
+        #         p.update(title, text)  # Use Post's method to handle timestamps
+        #         return True# Successfully updated
+        # return False # # Return false if no post found with the given ID
+        return self.post_dao.update_post(post_id, title, text)
+
 
     def delete_post(self, post_id):
-        for i, p in enumerate(self.posts):
-            if p.post_id == post_id:
-                del self.posts[i]
-                return True 
-        return False #True if post was found and deleted, False otherwise
+        # for i, p in enumerate(self.posts):
+        #     if p.post_id == post_id:
+        #         del self.posts[i]
+        #         return True 
+        # return False #True if post was found and deleted, False otherwise
+        return self.post_dao.delete_post(post_id)
 
     def list_posts(self):
-        # Return DESC by code
-        return sorted(self.posts, key=lambda p: p.post_id, reverse=True)
+        """
+        """
+        return self.post_dao.list_posts()
+
 
        
     def __str__(self):

@@ -32,13 +32,14 @@ class PostDAOPickle(PostDAO):
         return None
     
     def create_post(self, post):
-        """Create a new post"""
+        """ Create a new post. Return the Post or None if duplicate ID """
         if self.search_post(post.post_id) is not None:
-            return False
+            # A post with this ID already exists
+            return None
         
         self.posts.append(post)
         self._save_if_autosave()
-        return True
+        return post
     
     def retrieve_posts(self, search_string):
         """Search posts by title or content substring"""
