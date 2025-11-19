@@ -23,41 +23,32 @@ class Controller:
             self.blog_dao.autosave = autosave
         
     def load_users(self):
-        """Load users from users.txt file or use default for testing"""
+        """Load users from users.txt file"""
         users = {}
         
-        # Only load from file if autosave is enabled
-        if self.autosave:
-            try:
-                with open('blogging/users.txt', 'r') as file:
-                    for line in file:
-                        # Remove any extra whitespace/newlines
-                        cleaned_line = line.strip()
+        try:
+            # Always try to load from file, regardless of autosave
+            with open('blogging/users.txt', 'r') as file:
+                for line in file:
+                    # Remove any extra whitespace/newlines
+                    cleaned_line = line.strip()
+                    
+                    # Skip empty lines
+                    if not cleaned_line:
+                        continue
+                    
+                    # Split by comma: username,password_hash
+                    parts = cleaned_line.split(',')
+                    
+                    if len(parts) == 2:
+                        username = parts[0].strip()
+                        password_hash = parts[1].strip()
+                        users[username] = password_hash
                         
-                        # Skip empty lines
-                        if not cleaned_line:
-                            continue
-                        
-                        # Split by comma: username,password_hash
-                        parts = cleaned_line.split(',')
-                        
-                        if len(parts) == 2:
-                            username = parts[0].strip()
-                            password_hash = parts[1].strip()
-                            users[username] = password_hash
-                            
-            except FileNotFoundError:
-                print("users.txt file not found - using empty user list")
-            except Exception as e:
-                print(f"Error reading users.txt: {e}")
-        else:
-            # For controller tests (autosave=False), use hardcoded users
-            # These should match the users.txt file content
-            users = {
-                "user": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",  # 123456
-                "ali": "6394ffec21517605c1b426d43e6fa7eb0cff606ded9c2956821c2c36bfee2810",    # @G00dPassw0rd
-                "kala": "e5268ad137eec951a48a5e5da52558c7727aaa537c8b308b5e403e6b434e036e"   # P@ssw0rd
-            }
+        except FileNotFoundError:
+            print("users.txt file not found - using empty user list")
+        except Exception as e:
+            print(f"Error reading users.txt: {e}")
         
         return users
     
