@@ -2,6 +2,7 @@ from blogging.blog import Blog
 from blogging.post import Post
 import hashlib
 from blogging.dao.blog_dao_json import BlogDAOJSON
+from blogging.configuration import Configuration 
 from blogging.exception.duplicate_login_exception import DuplicateLoginException
 from blogging.exception.invalid_login_exception import InvalidLoginException
 from blogging.exception.invalid_logout_exception import InvalidLogoutException
@@ -11,16 +12,18 @@ from blogging.exception.no_current_blog_exception import NoCurrentBlogException
 
 
 class Controller:
-    def __init__(self, autosave=False):  # ADD autosave parameter
+    def __init__(self, autosave=None):  # Make parameter optional
         self.current_user = None
-        self.autosave = autosave  # STORE autosave flag
-        self.users = self.load_users()  # This should now use autosave logic
-        self.blog_dao = BlogDAOJSON()
-        self.current_blog = None
         
-        # Set autosave in DAO if needed
-        if hasattr(self.blog_dao, 'autosave'):
-            self.blog_dao.autosave = autosave
+        # If no autosave parameter provided, use Configuration.autosave
+        if autosave is None:
+            self.autosave = Configuration.autosave
+        else:
+            self.autosave = autosave
+            
+        self.users = self.load_users()
+        self.blog_dao = BlogDAOJSON(self.autosave)  # Pass the actual autosave value
+        self.current_blog = None
         
     def load_users(self):
         """Load users from users.txt file"""
@@ -93,12 +96,14 @@ class Controller:
     
         return result
         
-    def search_blog(self, blog_id):#story 4
+    def search_blog(self, blog_id):
+        if self.current_user is None:
+            raise IllegalAccessException()
         
-        if self.current_user is None: #checking if already logged in
-            raise IllegalAccessException()  # Exception instead of None
-        
-        return self.blog_dao.search_blog(blog_id)  # Delegate to DAO
+        print(f"DEBUG search_blog: Looking for blog {blog_id}")
+        result = self.blog_dao.search_blog(blog_id)
+        print(f"DEBUG search_blog: DAO returned: {result}")
+        return result
     
     def retrieve_blogs(self, name):#stroy 5
 
@@ -159,15 +164,18 @@ class Controller:
         
         return self.blog_dao.list_blogs()  # Delegate to DAO
 
-    def set_current_blog(self, blog_id): #story 9
+    def set_current_blog(self, blog_id):
         if self.current_user is None:
-            raise IllegalAccessException()  # Added login check at start
-        #finding the blog by ID
-        blog = self.search_blog(blog_id)  #use the search from story 4
+            raise IllegalAccessException()
+        
+        print(f"DEBUG set_current_blog: Searching for blog {blog_id}")
+        blog = self.search_blog(blog_id)
+        print(f"DEBUG set_current_blog: Found blog: {blog}")
+        
         if blog is not None:
             self.current_blog = blog
             return True
-        raise IllegalOperationException()  # Exception instead of False
+        raise IllegalOperationException()
 
     def get_current_blog(self):
         if self.current_user is None:
