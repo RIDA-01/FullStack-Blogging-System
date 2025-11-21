@@ -11,16 +11,20 @@ class BlogDAOJSON(BlogDAO):
         self.blogs = {}
         self.autosave = autosave
         self._loaded = False
-        
+
+        # if turn on DAO from file 
         if self.autosave:
             self._load_blogs()
             self._loaded = True
-        
+
+    def _get_blogs_file(self):
+        #adress blogs.json
+        return Configuration.blogs_file 
+
     def _ensure_loaded(self):
         if self.autosave and not self._loaded:
             self._load_blogs()
             self._loaded = True
-
 
         
     def _save_blogs(self):
@@ -29,23 +33,20 @@ class BlogDAOJSON(BlogDAO):
             return
             
         try:
-            blogs_file = os.path.join("blogging", Configuration.blogs_file)
-            print(f"DEBUG _save_blogs: Saving {len(self.blogs)} blogs to {blogs_file}")
-            
-            os.makedirs(os.path.dirname(blogs_file), exist_ok=True)
-            
-            with open(blogs_file, 'w') as file:
-                blogs_list = list(self.blogs.values())
-                print(f"DEBUG _save_blogs: Saving blogs: {[b.blog_id for b in blogs_list]}")
-                json.dump(blogs_list, file, cls=BlogEncoder, indent=2)
-            print(f"DEBUG _save_blogs: Successfully saved to file")
+            blogs_file = self._get_blogs_file()
+            os.makedirs(os.path.dirname(blogs_file) or ".", exist_ok=True)
+
+            blogs_list = list(self.blogs.values())  # ترتیب insertion حفظ می‌شود
+            with open(blogs_file, "w") as f:
+                json.dump(blogs_list, f, cls=BlogEncoder, indent=2)
+
         except Exception as e:
             print(f"Error saving blogs to file: {e}")
 
     def _load_blogs(self):
         """Load blogs from JSON file - only called when autosave=True"""
         try:
-            blogs_file = os.path.join("blogging", Configuration.blogs_file)
+            blogs_file = self._get_blogs_file()
             print(f"DEBUG _load_blogs: Loading from {blogs_file}, exists: {os.path.exists(blogs_file)}")
             
             if os.path.exists(blogs_file):
@@ -81,21 +82,26 @@ class BlogDAOJSON(BlogDAO):
         result = self.blogs.get(key)
         print(f"DEBUG BlogDAOJSON.search_blog: Returning: {result}")
         return result
+    
+    """
+    why we have two _ensure_loaded function?
+    
+    """
 
-    def _ensure_loaded(self):
-        print(f"DEBUG BlogDAOJSON._ensure_loaded: autosave={self.autosave}, _loaded={getattr(self, '_loaded', False)}")
-        if self.autosave and not getattr(self, '_loaded', False):
-            self._load_blogs()
-            self._loaded = True
+    # def _ensure_loaded(self):
+    #     print(f"DEBUG BlogDAOJSON._ensure_loaded: autosave={self.autosave}, _loaded={getattr(self, '_loaded', False)}")
+    #     if self.autosave and not getattr(self, '_loaded', False):
+    #         self._load_blogs()
+    #         self._loaded = True
             
-            if blog.blog_id in self.blogs:
-                print("Blog ID already exists")
-                return None
+    #         if blog.blog_id in self.blogs:
+    #             print("Blog ID already exists")
+    #             return None
             
-            self.blogs[blog.blog_id] = blog
-            print(f"Blog created successfully. Total blogs: {len(self.blogs)}")
-            self._save_blogs()
-            return blog
+    #         self.blogs[blog.blog_id] = blog
+    #         print(f"Blog created successfully. Total blogs: {len(self.blogs)}")
+    #         self._save_blogs()
+    #         return blog
         
     def retrieve_blogs(self, search_string):
         self._ensure_loaded()
@@ -106,6 +112,11 @@ class BlogDAOJSON(BlogDAO):
         return matching_blogs
     
     def update_blog(self, key, blog):
+        """
+        key = old_id
+        blog.blog_id = new_id (might be the same or changed)
+
+        """
         self._ensure_loaded()
         if key not in self.blogs:
             return None
