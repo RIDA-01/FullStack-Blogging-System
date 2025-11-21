@@ -11,7 +11,7 @@ class BlogEncoder(json.JSONEncoder):
                 'name': obj.name,
                 'url': obj.url,
                 'email': obj.email,
-                'post_counter': obj.post_counter,
+                # 'post_counter': obj.post_counter,
                 '_class_': 'Blog'
             }
             print(f"Encoded blog: {result}")

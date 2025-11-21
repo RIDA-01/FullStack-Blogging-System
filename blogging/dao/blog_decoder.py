@@ -17,6 +17,6 @@ class BlogDecoder(json.JSONDecoder):
             )
             # Reset post_counter to 1 when loading from file
             # (posts will be loaded separately by PostDAOPickle)
-            blog.post_counter = 1
+            # blog.post_counter = 1
             return blog
         return d

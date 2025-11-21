@@ -7,15 +7,14 @@ class Blog:
         self.name = name
         self.url = url
         self.email = email
+
+        # default value for new blogs
+        self.post_counter = 1
+
         # DAO responsible for managing this blog's posts (in memory + file).
+        # If there are existing posts on disk, DAO will update post_counter.
         self.post_dao = PostDAOPickle(self)
-        # Initialize post_counter based on existing posts (for persistence).
-        if self.post_dao.posts:
-            max_id = max(p.post_id for p in self.post_dao.posts)
-            self.post_counter = max_id + 1
-        else:
-            self.post_counter = 1
-    
+
     def __eq__(self, other):
         """ Compare two Blog objects for equality """
         if not isinstance(other, Blog):

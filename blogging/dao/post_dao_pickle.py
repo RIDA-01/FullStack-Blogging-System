@@ -10,23 +10,31 @@ class PostDAOPickle(PostDAO):
         self.autosave = Configuration.autosave  # FIX: Direct class access
         
         # Use Configuration for file paths
-        records_dir = os.path.join("blogging", Configuration.records_path)
+        records_dir = Configuration.records_path   # "records"
         os.makedirs(records_dir, exist_ok=True)
-        
         self.filename = os.path.join(records_dir, f"{blog.blog_id}{Configuration.records_extension}")
-        
+
+                
         if self.autosave:
             try:
                 with open(self.filename, "rb") as f:
                     self.posts = pickle.load(f)
                     # Update blog's post counter after loading
-                    if self.posts:
-                        max_id = max(post.post_id for post in self.posts)
-                        self.blog.post_counter = max_id + 1
+                    """ This part might fix the blog counting problem """
+                    # if self.posts:
+                    #     max_id = max(post.post_id for post in self.posts)
+                    #     self.blog.post_counter = max_id + 1
             except FileNotFoundError:
                 self.posts = []
         else:
             self.posts = []
+
+        if self.posts:
+            max_id = max(post.post_id for post in self.posts)
+            self.blog.post_counter = max_id + 1
+        else:
+            if not hasattr(self.blog, "post_counter"):
+                self.blog.post_counter = 1
     
     def search_post(self, key):
         for post in self.posts:
@@ -39,11 +47,9 @@ class PostDAOPickle(PostDAO):
             return None
         
         self.posts.append(post)
-        
         # Update blog's post counter
         if post.post_id >= self.blog.post_counter:
             self.blog.post_counter = post.post_id + 1
-            
         self._save_if_autosave()
         return post
     
