@@ -99,10 +99,10 @@ class Controller:
     def search_blog(self, blog_id):
         if self.current_user is None:
             raise IllegalAccessException()
-        
-        print(f"DEBUG search_blog: Looking for blog {blog_id}")
+        #we used the two commented lines debigging becuase we had errors adn we didnt know where they were
+        #print(f"DEBUG search_blog: Looking for blog {blog_id}")
         result = self.blog_dao.search_blog(blog_id)
-        print(f"DEBUG search_blog: DAO returned: {result}")
+        #print(f"DEBUG search_blog: DAO returned: {result}")
         return result
     
     def retrieve_blogs(self, name):#stroy 5
@@ -167,10 +167,10 @@ class Controller:
     def set_current_blog(self, blog_id):
         if self.current_user is None:
             raise IllegalAccessException()
-        
-        print(f"DEBUG set_current_blog: Searching for blog {blog_id}")
+        #we used the two commented lines debigging becuase we had errors adn we didnt know where they were
+        #print(f"DEBUG set_current_blog: Searching for blog {blog_id}")
         blog = self.search_blog(blog_id)
-        print(f"DEBUG set_current_blog: Found blog: {blog}")
+        #print(f"DEBUG set_current_blog: Found blog: {blog}")
         
         if blog is not None:
             self.current_blog = blog
