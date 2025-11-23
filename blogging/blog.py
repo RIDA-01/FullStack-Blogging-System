@@ -3,6 +3,7 @@ from blogging.post import Post
 
 class Blog:
     def __init__(self, blog_id, name, url, email):
+        # Basic blog information
         self.blog_id = blog_id
         self.name = name
         self.url = url
@@ -26,7 +27,7 @@ class Blog:
     
     def create_post(self, title, text): 
         """
-        Create a new Post for this blog and return it
+        Create a new Post for this blog then save the post through the DAO
         """
         p = Post(self.post_counter, title, text)
         self.post_counter += 1 
@@ -35,41 +36,36 @@ class Blog:
 
     def search_post(self, post_id):
         """ 
-        Find a specific post in this blog by its ID
-        Delegate post search to the DAO 
+        Ask DAO to find a post by ID.
+        Blog itself does not search inside the list
         """
         return self.post_dao.search_post(post_id)
 
     def retrieve_posts(self, query):
         """
-        Search for posts containing the query string in title or text.
-        Case-insensitive search in title OR text, return ASC by code
+        Ask DAO to return posts matching the search text
+        Search is case insensitive and checks both title and text
         """
         return self.post_dao.retrieve_posts(query)
 
 
     def update_post(self, post_id, title, text):
         """
-        Search through all posts to find the one with matching ID
+        Ask DAO to update a post with new title/text.
         """
-        # for p in self.posts:
-        #     if p.post_id == post_id:
-        #         p.update(title, text)  # Use Post's method to handle timestamps
-        #         return True# Successfully updated
-        # return False # # Return false if no post found with the given ID
         return self.post_dao.update_post(post_id, title, text)
 
 
     def delete_post(self, post_id):
-        # for i, p in enumerate(self.posts):
-        #     if p.post_id == post_id:
-        #         del self.posts[i]
-        #         return True 
-        # return False #True if post was found and deleted, False otherwise
+        """
+        Delete a post using the DAO
+        """
         return self.post_dao.delete_post(post_id)
 
     def list_posts(self):
         """
+        Return all posts sorted by ID (descending)
+        DAO does the sorting logic
         """
         return self.post_dao.list_posts()
 
