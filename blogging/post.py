@@ -5,13 +5,15 @@ class Post:
    
     
     def __init__(self, post_id, title, text):
-        # Core post content and identity
+        # Basic post information
         self.post_id = post_id
         self.title = title
         self.text = text
         # Timestamps required by assignment specification
+        # created_at: when the post was first made
+        # updated_at: last time the post changed (starts same as created_at)
         self.created_at = datetime.datetime.now()
-        self.updated_at = self.created_at  # Initially same as creation time
+        self.updated_at = self.created_at
     
     def __eq__(self, other):
         """
