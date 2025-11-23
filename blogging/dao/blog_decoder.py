@@ -13,7 +13,7 @@ class BlogDecoder(json.JSONDecoder):
             # Convert dictionary to Blog object
             blog = Blog(
                 d['blog_id'],
-                d['name'], 
+                d['name'],
                 d['url'],
                 d['email']
             )
