@@ -56,14 +56,14 @@ class Controller:
         return users
     
     def get_password_hash(self, password):
-        """Convert password to SHA-256 hash"""
+        """ Convert password to SHA-256 hash """
         encoded_password = password.encode('utf-8')
         hash_object = hashlib.sha256(encoded_password)
         hex_dig = hash_object.hexdigest()
         return hex_dig
     
-    def login(self, username, password):#story 1    
-        if self.current_user is not None:#checking if already logged in
+    def login(self, username, password): # story 1    
+        if self.current_user is not None: # check if already logged in
             raise DuplicateLoginException()  # Already logged in
             
          # Check if username exists and password hash matches
@@ -75,15 +75,15 @@ class Controller:
         raise InvalidLoginException()  # Wrong credentials
     
     def logout(self):#story2
-        if self.current_user is not None:#if logged in then u can log out
+        if self.current_user is not None: # if logged in then u can log out
             self.current_user = None
-            self.current_blog = None #added this line for story 9
+            self.current_blog = None # added this line for story 9
             return True
         raise InvalidLogoutException()  # Not logged in
     
     def create_blog(self, blog_id, name, url, email):#story 3
 
-        if self.current_user is None:   #checking if already logged in
+        if self.current_user is None:   # check if already logged in
             raise IllegalAccessException()
 
          
@@ -99,15 +99,15 @@ class Controller:
     def search_blog(self, blog_id):
         if self.current_user is None:
             raise IllegalAccessException()
-        #we used the two commented lines debigging becuase we had errors adn we didnt know where they were
-        #print(f"DEBUG search_blog: Looking for blog {blog_id}")
+        # we used the two commented lines debigging becuase we had errors adn we didnt know where they were
+        # print(f"DEBUG search_blog: Looking for blog {blog_id}")
         result = self.blog_dao.search_blog(blog_id)
-        #print(f"DEBUG search_blog: DAO returned: {result}")
+        # print(f"DEBUG search_blog: DAO returned: {result}")
         return result
     
-    def retrieve_blogs(self, name):#stroy 5
+    def retrieve_blogs(self, name): # stroy 5
 
-        if self.current_user is None: #checking if already logged in
+        if self.current_user is None: # checking if already logged in
             raise IllegalAccessException()
         
         return self.blog_dao.retrieve_blogs(name)  # Delegate to DAO
@@ -141,12 +141,12 @@ class Controller:
         
         return result  
 
-    def delete_blog(self, blog_id): #story 7
+    def delete_blog(self, blog_id): # story 7
 
-        if self.current_user is None: #checking if already logged in
+        if self.current_user is None: # checking if already logged in
             raise IllegalAccessException()
         
-        #checkinng to delete the current blog
+        # checkinng to delete the current blog
         if self.current_blog and self.current_blog.blog_id == blog_id:
             raise IllegalOperationException()  # Can't update current blog  #can't delete current blog
         
@@ -159,7 +159,7 @@ class Controller:
         
     def list_blogs(self): #story 8
 
-        if self.current_user is None:  #checking if already logged in
+        if self.current_user is None:  # check if already logged in
             raise IllegalAccessException()
         
         return self.blog_dao.list_blogs()  # Delegate to DAO
@@ -167,10 +167,10 @@ class Controller:
     def set_current_blog(self, blog_id):
         if self.current_user is None:
             raise IllegalAccessException()
-        #we used the two commented lines debigging becuase we had errors adn we didnt know where they were
-        #print(f"DEBUG set_current_blog: Searching for blog {blog_id}")
+        # we used the two commented lines debigging becuase we had errors adn we didnt know where they were
+        # print(f"DEBUG set_current_blog: Searching for blog {blog_id}")
         blog = self.search_blog(blog_id)
-        #print(f"DEBUG set_current_blog: Found blog: {blog}")
+        # print(f"DEBUG set_current_blog: Found blog: {blog}")
         
         if blog is not None:
             self.current_blog = blog
@@ -191,8 +191,8 @@ class Controller:
     """
     Post functions:
     """
-    def create_post(self, title: str, text: str): #story 10
-        #Must be logged in and have a current blog selected
+    def create_post(self, title: str, text: str): # story 10
+        # Must be logged in and have a current blog selected
         # Check 1: Is user logged in?
         if self.current_user is None:
             raise IllegalAccessException()
@@ -203,11 +203,11 @@ class Controller:
         blog = self.get_current_blog()
         if blog is None:
             return None
-        # # Delegate to current blog's create_post method
-        return blog.create_post(title, text) #The newly created post, or None if requirements not met
+        # Delegate to current blog's create_post method
+        return blog.create_post(title, text) # The newly created post, or None if requirements not met
     
     def search_post(self, post_id: int):
-        ## Must be logged in and have a current blog selected
+        # Must be logged in and have a current blog selected
         # Check 1: Is user logged in?
         if self.current_user is None:
             raise IllegalAccessException()
@@ -217,10 +217,10 @@ class Controller:
         blog = self.get_current_blog()
         if blog is None:
             return None
-        return blog.search_post(post_id) #The found post, or None if not found or requirements not met
+        return blog.search_post(post_id) # The found post, or None if not found or requirements not met
 
 
-    def retrieve_posts(self, query: str): #story 11
+    def retrieve_posts(self, query: str): # story 11
         # Check 1: Is user logged in?
         if self.current_user is None:
             raise IllegalAccessException()
@@ -230,23 +230,10 @@ class Controller:
         blog = self.get_current_blog()
         if blog is None:
           return None
-        return blog.retrieve_posts(query)#Matching posts sorted by ID, or None if requirements not met
+        return blog.retrieve_posts(query) # Matching posts sorted by ID, or None if requirements not met
     
 
     def update_post(self, post_id: int, title: str, text: str): #story 12
-         # Must be logged in and have a current blog selected
-        # Check 1: Is user logged in?
-        if self.current_user is None:
-            raise IllegalAccessException()
-        # Check 2: Is there a current blog selected?
-        if self.current_blog is None:
-            raise NoCurrentBlogException()
-        blog = self.get_current_blog()
-        if blog is None:
-            return False
-        return blog.update_post(post_id, title, text) #True if post was updated, False otherwise
-
-    def delete_post(self, post_id: int): #story 13
         # Must be logged in and have a current blog selected
         # Check 1: Is user logged in?
         if self.current_user is None:
@@ -257,10 +244,23 @@ class Controller:
         blog = self.get_current_blog()
         if blog is None:
             return False
-        return blog.delete_post(post_id) #True if post was deleted, False otherwise
+        return blog.update_post(post_id, title, text) # True if post was updated, False otherwise
+
+    def delete_post(self, post_id: int): # story 13
+        # Must be logged in and have a current blog selected
+        # Check 1: Is user logged in?
+        if self.current_user is None:
+            raise IllegalAccessException()
+        # Check 2: Is there a current blog selected?
+        if self.current_blog is None:
+            raise NoCurrentBlogException()
+        blog = self.get_current_blog()
+        if blog is None:
+            return False
+        return blog.delete_post(post_id) # True if post was deleted, False otherwise
 
     def list_posts(self): #story 14
-         # Must be logged in and have a current blog selected
+        # Must be logged in and have a current blog selected
         # Check 1: Is user logged in?
         if self.current_user is None:
             raise IllegalAccessException()
@@ -270,4 +270,4 @@ class Controller:
         blog = self.get_current_blog()
         if blog is None:
             return None
-        return blog.list_posts() #All posts sorted by ID descending, or None if requirements not met
+        return blog.list_posts() # All posts sorted by ID descending, or None if requirements not met
