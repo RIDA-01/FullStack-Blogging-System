@@ -1,6 +1,8 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QStackedWidget, 
-QVBoxLayout, QWidget, QMessageBox, QTableView,QPlainTextEdit, QHeaderView, QLabel, QLineEdit, QPushButton, QHBoxLayout)
+                             QVBoxLayout, QWidget, QMessageBox, QTableView,
+                             QPlainTextEdit, QHeaderView, QLabel, 
+                             QLineEdit, QPushButton, QHBoxLayout)
 from PyQt6.QtCore import Qt, QAbstractTableModel
 from blogging.configuration import Configuration
 from blogging.controller import Controller
@@ -156,6 +158,80 @@ class MainMenuWidget(QWidget):
         except Exception as e:
             QMessageBox.warning(self, "Logout Error", str(e))
 
+class SearchBlogWidget(QWidget):
+    def __init__(self, main_window):
+        super().__init__()
+        self.main_window = main_window
+        self.setup_ui()
+
+    def setup_ui(self):
+        layout = QVBoxLayout()
+        
+        # Title
+        title = QLabel("Search Blog by ID")
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title.setStyleSheet("font-size: 18px; font-weight: bold; margin: 20px;")
+        layout.addWidget(title)
+        
+        # Blog ID input
+        layout.addWidget(QLabel("Blog ID:"))
+        self.blog_id_input = QLineEdit()
+        self.blog_id_input.setPlaceholderText("Enter blog ID number")
+        layout.addWidget(self.blog_id_input)
+        
+        # Search button
+        search_btn = QPushButton("Search Blog")
+        search_btn.clicked.connect(self.search_blog)
+        layout.addWidget(search_btn)
+        
+        # Back button
+        back_btn = QPushButton("Back to Main Menu")
+        back_btn.clicked.connect(self.main_window.show_main_menu)
+        layout.addWidget(back_btn)
+        
+        # Results area
+        self.results_label = QLabel("")
+        self.results_label.setStyleSheet("margin: 20px;")
+        layout.addWidget(self.results_label)
+        
+        self.setLayout(layout)
+
+    def search_blog(self):
+        blog_id_text = self.blog_id_input.text().strip()
+        
+        if not blog_id_text:
+            self.results_label.setText("Please enter a blog ID")
+            self.results_label.setStyleSheet("color: red; margin: 20px;")
+            return
+            
+        try:
+            blog_id = int(blog_id_text)
+            blog = self.main_window.controller.search_blog(blog_id)
+            
+            if blog:
+                result_text = f"""
+                <h3>Blog Found:</h3>
+                <b>ID:</b> {blog.blog_id}<br>
+                <b>Name:</b> {blog.name}<br>
+                <b>URL:</b> {blog.url}<br>
+                <b>Email:</b> {blog.email}
+                """
+                self.results_label.setText(result_text)
+                self.results_label.setStyleSheet("color: green; margin: 20px;")
+            else:
+                self.results_label.setText(f"No blog found with ID: {blog_id}")
+                self.results_label.setStyleSheet("color: red; margin: 20px;")
+                
+        except ValueError:
+            self.results_label.setText("Please enter a valid number for Blog ID")
+            self.results_label.setStyleSheet("color: red; margin: 20px;")
+        except IllegalAccessException:
+            self.results_label.setText("Error: You must be logged in to search blogs")
+            self.results_label.setStyleSheet("color: red; margin: 20px;")
+        except Exception as e:
+            self.results_label.setText(f"Error searching blog: {str(e)}")
+            self.results_label.setStyleSheet("color: red; margin: 20px;")
+
 class BloggingGUI(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -163,8 +239,9 @@ class BloggingGUI(QMainWindow):
         self.configuration.__class__.autosave = True
         self.controller = Controller()
         
-        self.setWindowTitle("Blogging System")
-        self.setGeometry(100, 100, 800, 600)
+        # Start with smaller login window
+        self.setWindowTitle("Blogging System - Login")
+        self.setGeometry(100, 100, 400, 300)  # Smaller size for login
         
         self.setup_ui()
         self.show_login()
@@ -183,28 +260,34 @@ class BloggingGUI(QMainWindow):
         # Create different screens
         self.login_widget = LoginWidget(self)
         self.main_menu_widget = MainMenuWidget(self)
+        self.search_blog_widget = SearchBlogWidget(self)
         
         # Add widgets to stacked widget
         self.stacked_widget.addWidget(self.login_widget)
         self.stacked_widget.addWidget(self.main_menu_widget)
+        self.stacked_widget.addWidget(self.search_blog_widget)
         
     def show_login(self):
-        """Show login screen"""
+        """Show login screen - smaller window"""
         self.stacked_widget.setCurrentWidget(self.login_widget)
         self.setWindowTitle("Blogging System - Login")
+        self.resize(400, 300)  # Small size for login
         
     def show_main_menu(self):
-        """Show main menu after successful login"""
+        """Show main menu - larger window"""
         self.stacked_widget.setCurrentWidget(self.main_menu_widget)
         self.setWindowTitle("Blogging System - Main Menu")
+        self.resize(600, 400)  # Larger size for main menu
+        
+    def show_search_blog(self):
+        """Show search blog screen"""
+        self.stacked_widget.setCurrentWidget(self.search_blog_widget)
+        self.setWindowTitle("Blogging System - Search Blog")
+        self.resize(500, 400)  # Medium size for search
         
     def show_create_blog(self):
         """Show create blog screen - to be implemented"""
         QMessageBox.information(self, "Info", "Create Blog feature - To be implemented")
-        
-    def show_search_blog(self):
-        """Show search blog screen - to be implemented"""
-        QMessageBox.information(self, "Info", "Search Blog feature - To be implemented")
         
     def show_retrieve_blogs(self):
         """Show retrieve blogs screen - to be implemented"""
