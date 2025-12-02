@@ -1,0 +1,109 @@
+Assignment 4 Grading:
+---------------------
+Student Group "group013" (Rida Deeb & Yasaman Rezapour)
+Grade: 100/100, 100%
+
+Python test results:
+------------------------
+
+Results for controller_test.py:
+Blog ID already exists
+
+test_create_post (tests.controller_test.ControllerTest) ... ok
+test_create_search_blog (tests.controller_test.ControllerTest) ... ok
+test_delete_blog (tests.controller_test.ControllerTest) ... ok
+test_delete_post (tests.controller_test.ControllerTest) ... ok
+test_list_blogs (tests.controller_test.ControllerTest) ... ok
+test_list_posts (tests.controller_test.ControllerTest) ... ok
+test_login_logout (tests.controller_test.ControllerTest) ... ok
+test_retrieve_blogs (tests.controller_test.ControllerTest) ... ok
+test_retrieve_posts (tests.controller_test.ControllerTest) ... ok
+test_set_get_current_blog (tests.controller_test.ControllerTest) ... ok
+test_update_blog (tests.controller_test.ControllerTest) ... ok
+test_update_post (tests.controller_test.ControllerTest) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.033s
+
+OK
+
+Results for integration_test.py:
+Blog ID already exists
+
+test_create_post (tests.integration_test.IntegrationTest) ... ok
+test_create_search_blog (tests.integration_test.IntegrationTest) ... ok
+test_delete_blog (tests.integration_test.IntegrationTest) ... ok
+test_delete_post (tests.integration_test.IntegrationTest) ... ok
+test_list_blogs (tests.integration_test.IntegrationTest) ... ok
+test_list_posts (tests.integration_test.IntegrationTest) ... ok
+test_login_logout (tests.integration_test.IntegrationTest) ... ok
+test_retrieve_blogs (tests.integration_test.IntegrationTest) ... ok
+test_retrieve_posts (tests.integration_test.IntegrationTest) ... ok
+test_set_get_current_blog (tests.integration_test.IntegrationTest) ... ok
+test_update_blog (tests.integration_test.IntegrationTest) ... ok
+test_update_post (tests.integration_test.IntegrationTest) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.451s
+
+OK
+
+
+Summary:
+Passed tests: 24
+Failed tests: 0
+
+Controller tests: 24/24 points.
+Integration tests: 48/48 points.
+
+Version Control (git log):
+--------------------------
+6764b9d	Yasaman Rezapour	Sat Nov 22 19:17:29 2025 -0800	final version
+60f148e	Yasaman Rezapour	Sat Nov 22 19:15:01 2025 -0800	final version of controller.py
+d783b99	Yasaman Rezapour	Sat Nov 22 19:09:44 2025 -0800	final version of blog.py
+deb6839	Yasaman Rezapour	Sat Nov 22 19:03:45 2025 -0800	final version of post_dao
+ae9fd70	Yasaman Rezapour	Sat Nov 22 18:57:13 2025 -0800	final version of blog_decoder.py
+784cc8d	rida	Sat Nov 22 00:32:19 2025 -0800	small edits
+9dc62be	rida	Fri Nov 21 23:46:03 2025 -0800	comments for blog_dao_json
+0db58fb	Yasaman Rezapour	Thu Nov 20 19:40:52 2025 -0800	passing tests but it need comment and final check
+48c25c7	Yasaman Rezapour	Thu Nov 20 18:23:06 2025 -0800	just change in blog_dao_json.py (del double function ensure loaded + fix blogs.json path + load/save logic )
+303733e	rida	Wed Nov 19 02:48:49 2025 -0800	step 3.1 done now it saves blogs and encoder and decoder handles JSON
+3f31918	rida	Wed Nov 19 00:34:47 2025 -0800	3.1 task done as lab9 which is reading from file users.txt
+ae8ae10	rida	Wed Nov 19 00:29:19 2025 -0800	trying 3.1 with writing the users in controller.py
+8e580df	Yasaman Rezapour	Tue Nov 18 13:29:25 2025 -0800	Step 2.2(Post DAO) completed
+5e7d216	Yasaman Rezapour	Tue Nov 18 01:02:50 2025 -0800	Change in post_dao_pickle
+f46c1e2	rida	Sat Nov 15 02:36:03 2025 -0800	step 2.1 done  by creating blof_dao_json file and let controller use DAO pattern for blog
+c43accb	rida	Sat Nov 15 01:00:39 2025 -0800	step 1 is done : used passord hashing form lab9 and added all types of exception instead of return none
+25566a1	rida	Fri Nov 14 23:43:38 2025 -0800	adding starter files
+5c1970a	Jonah Carroll Dullaert	Thu Nov 13 11:19:38 2025 -0800	Assignment 3 feedback. Send me an email if you have any questions.
+7cd93fa	Yasaman Rezapour	Fri Nov 7 14:19:07 2025 -0800	blog_test changed
+9542eab	Yasaman Rezapour	Fri Nov 7 13:40:07 2025 -0800	change posts files
+95395d6	Yasaman Rezapour	Fri Nov 7 13:34:28 2025 -0800	change in controller, post and blog
+e74468f	Yasaman Rezapour	Fri Nov 7 12:51:40 2025 -0800	Merge branch 'yasaman-part' into main
+99c7eec	rida	Thu Nov 6 21:23:07 2025 -0800	some edits on blogging files and adding post_test.py
+cce923c	Yasaman Rezapour	Thu Nov 6 18:27:44 2025 -0800	Minor changes in main files
+eb8548f	Yasaman Rezapour	Sun Nov 2 22:45:25 2025 -0800	added id file
+49b85fd	Yasaman Rezapour	Sun Nov 2 16:51:32 2025 -0800	Minor change in Controller file (get Blog and list) and one test for post
+b454e5b	Yasaman Rezapour	Sun Nov 2 13:37:08 2025 -0800	Minor change in Post
+df3bca8	Yasaman Rezapour	Sun Nov 2 01:42:55 2025 -0800	Completing blog files functions
+06f208b	Yasaman Rezapour	Sun Nov 2 01:41:42 2025 -0800	add <create, search , retrive> function to blog file
+d791dd3	Yasaman Rezapour	Sun Nov 2 01:39:38 2025 -0800	Make change in post file
+7575d81	Yasaman Rezapour	Sun Nov 2 01:23:15 2025 -0800	Complete Contorller File
+64dd646	rida	Sun Oct 26 00:17:21 2025 -0700	story 9 and small edits
+8c0ed60	rida	Sat Oct 25 23:20:47 2025 -0700	story 8
+9ca32cf	rida	Sat Oct 25 23:13:38 2025 -0700	story 7
+79cf5a2	rida	Sat Oct 25 23:08:41 2025 -0700	story 6
+161356b	rida	Sat Oct 25 22:18:09 2025 -0700	story 5
+2e706b9	rida	Sat Oct 25 19:43:31 2025 -0700	story 4
+b20607c	rida	Sat Oct 25 19:40:34 2025 -0700	story 3
+0b7ca4a	rida	Sat Oct 25 19:18:33 2025 -0700	implemented Blog class with equality comparison and unit tests
+b2a3e94	rida	Sat Oct 25 18:39:52 2025 -0700	stories 1-2: login/logout functionality
+6ff0317	rida	Sat Oct 25 13:34:42 2025 -0700	added required files
+959d076	Roberto Bittencourt	Tue Oct 21 14:14:13 2025 -0700	Added controller tests and configuration files
+c025491	Roberto Bittencourt	Tue Oct 21 21:08:52 2025 +0000	Initial commit
+
+Solid commit log, detailing your collaborative progress. 8/8 points.
+
+Modularization: 10/10 points.
+Documentation: 10/10 points.
+Other remarks: Excellent stuff, well done.
