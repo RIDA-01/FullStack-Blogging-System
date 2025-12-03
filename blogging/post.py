@@ -14,6 +14,21 @@ class Post:
         # updated_at: last time the post changed (starts same as created_at)
         self.created_at = datetime.datetime.now()
         self.updated_at = self.created_at
+
+    # CLI expects post.code
+    @property
+    def code(self):
+        return self.post_id
+
+    # CLI expects post.creation_time
+    @property
+    def creation_time(self):
+        return self.created_at
+
+    # CLI expects post.update_time
+    @property
+    def update_time(self):
+        return self.updated_at
     
     def __eq__(self, other):
         """

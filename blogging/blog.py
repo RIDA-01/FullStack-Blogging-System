@@ -15,6 +15,11 @@ class Blog:
         # DAO responsible for managing this blog's posts (in memory + file).
         # If there are existing posts on disk, DAO will update post_counter.
         self.post_dao = PostDAOPickle(self)
+    
+    # CLI expects blog.id
+    @property
+    def id(self):
+        return self.blog_id
 
     def __eq__(self, other):
         """ Compare two Blog objects for equality """
