@@ -21,6 +21,10 @@ from .list_blogs_widget import ListBlogsWidget
 from .choose_current_blog_widget import ChooseCurrentBlogWidget
 from blogging.gui.create_post_widget import CreatePostWidget
 from blogging.gui.list_posts_widget import ListPostsWidget
+from blogging.gui.search_posts_widget import SearchPostsWidget
+from blogging.gui.update_post_widget import UpdatePostWidget
+from blogging.gui.delete_post_widget import DeletePostWidget
+
 
 
             
@@ -65,6 +69,10 @@ class BloggingGUI(QMainWindow):
         #Post
         self.create_post_widget = CreatePostWidget(self)
         self.list_posts_widget = ListPostsWidget(self)
+        self.search_posts_widget = SearchPostsWidget(self)
+        self.update_post_widget = UpdatePostWidget(self)
+        self.delete_post_widget = DeletePostWidget(self)
+
 
         
 
@@ -82,6 +90,10 @@ class BloggingGUI(QMainWindow):
         # Post
         self.stacked_widget.addWidget(self.create_post_widget)
         self.stacked_widget.addWidget(self.list_posts_widget)
+        self.stacked_widget.addWidget(self.search_posts_widget)
+        self.stacked_widget.addWidget(self.update_post_widget)
+        self.stacked_widget.addWidget(self.delete_post_widget)
+
 
 
 
@@ -163,6 +175,22 @@ class BloggingGUI(QMainWindow):
         self.stacked_widget.setCurrentWidget(self.list_posts_widget)
         self.setWindowTitle("Blogging System - List Posts")
         self.resize(700, 500)
+    
+    def show_search_posts(self):
+        """Show search posts screen"""
+        self.setWindowTitle("Blogging System - Search Posts")
+        self.resize(700, 500)
+        self.stacked_widget.setCurrentWidget(self.search_posts_widget)
+
+    def show_update_post(self):
+        self.setWindowTitle("Blogging System - Update Post")
+        self.resize(700, 500)
+        self.stacked_widget.setCurrentWidget(self.update_post_widget)
+
+    def show_delete_post(self):
+        self.setWindowTitle("Blogging System - Delete Post")
+        self.resize(700, 500)
+        self.stacked_widget.setCurrentWidget(self.delete_post_widget)
 
 
 

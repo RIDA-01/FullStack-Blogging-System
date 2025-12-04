@@ -65,13 +65,26 @@ class MainMenuWidget(QWidget):
         create_post_btn.clicked.connect(self.main_window.show_create_post)
         layout.addWidget(create_post_btn)
 
+        # Search Posts Button
+        search_posts_btn = QPushButton("Search Posts by Text")
+        search_posts_btn.clicked.connect(self.main_window.show_search_posts)
+        layout.addWidget(search_posts_btn)
+
+        # Update Post Button
+        update_post_btn = QPushButton("Update Existing Post")
+        update_post_btn.clicked.connect(self.main_window.show_update_post)
+        layout.addWidget(update_post_btn)
+
         # List Post Button 
         list_posts_btn = QPushButton("List Posts")
         list_posts_btn.clicked.connect(self.main_window.show_list_posts)
         layout.addWidget(list_posts_btn)
 
+        # Delete Post Button
+        delete_post_btn = QPushButton("Delete Post")
+        delete_post_btn.clicked.connect(self.main_window.show_delete_post)
+        layout.addWidget(delete_post_btn)
 
-        
         # Logout button
         logout_btn = QPushButton("Logout")
         logout_btn.clicked.connect(self.logout)
