@@ -1,8 +1,5 @@
 
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QStackedWidget, 
-                             QVBoxLayout, QWidget, QMessageBox, QTableView,
-                             QPlainTextEdit, QHeaderView, QLabel, 
-                             QLineEdit, QPushButton, QHBoxLayout)
+from PyQt6.QtWidgets import *
 from PyQt6.QtCore import Qt, QAbstractTableModel
 from blogging.configuration import Configuration
 from blogging.controller import Controller
