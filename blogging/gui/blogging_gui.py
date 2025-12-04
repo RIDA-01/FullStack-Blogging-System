@@ -19,6 +19,10 @@ from .update_blog_widget import UpdateBlogWidget
 from .delete_blog_widget import DeleteBlogWidget
 from .list_blogs_widget import ListBlogsWidget
 from .choose_current_blog_widget import ChooseCurrentBlogWidget
+from blogging.gui.create_post_widget import CreatePostWidget
+from blogging.gui.list_posts_widget import ListPostsWidget
+
+
             
 
 
@@ -48,6 +52,7 @@ class BloggingGUI(QMainWindow):
         self.layout.addWidget(self.stacked_widget)
         
         # Create different screens
+        #Blog
         self.login_widget = LoginWidget(self)
         self.main_menu_widget = MainMenuWidget(self)
         self.search_blog_widget = SearchBlogWidget(self)
@@ -57,8 +62,14 @@ class BloggingGUI(QMainWindow):
         self.delete_blog_widget = DeleteBlogWidget(self)
         self.list_blogs_widget = ListBlogsWidget(self)
         self.choose_current_blog_widget = ChooseCurrentBlogWidget(self)
+        #Post
+        self.create_post_widget = CreatePostWidget(self)
+        self.list_posts_widget = ListPostsWidget(self)
+
         
+
         # Add widgets to stacked widget
+        #Blog
         self.stacked_widget.addWidget(self.login_widget)
         self.stacked_widget.addWidget(self.main_menu_widget)
         self.stacked_widget.addWidget(self.search_blog_widget)
@@ -68,6 +79,12 @@ class BloggingGUI(QMainWindow):
         self.stacked_widget.addWidget(self.delete_blog_widget)
         self.stacked_widget.addWidget(self.list_blogs_widget)
         self.stacked_widget.addWidget(self.choose_current_blog_widget) 
+        # Post
+        self.stacked_widget.addWidget(self.create_post_widget)
+        self.stacked_widget.addWidget(self.list_posts_widget)
+
+
+
         
     def show_login(self):
         """Show login screen - smaller window"""
@@ -80,6 +97,11 @@ class BloggingGUI(QMainWindow):
         self.stacked_widget.setCurrentWidget(self.main_menu_widget)
         self.setWindowTitle("Blogging System - Main Menu")
         self.resize(600, 400)  # Larger size for main menu
+
+
+        """
+        Blog Section
+        """
         
     def show_search_blog(self):
         """Show search blog screen"""
@@ -126,6 +148,23 @@ class BloggingGUI(QMainWindow):
         self.resize(700, 500)  
         # Auto-load blogs when showing this screen
         self.choose_current_blog_widget.load_blogs()   
+
+
+    """
+    Post Section
+    """
+    def show_create_post(self):
+        create_post_widget = CreatePostWidget(self)
+        self.stacked_widget.addWidget(create_post_widget)
+        self.stacked_widget.setCurrentWidget(create_post_widget)
+
+    def show_list_posts(self):
+        self.list_posts_widget.load_posts()
+        self.stacked_widget.setCurrentWidget(self.list_posts_widget)
+        self.setWindowTitle("Blogging System - List Posts")
+        self.resize(700, 500)
+
+
 
 def main():
     app = QApplication(sys.argv)

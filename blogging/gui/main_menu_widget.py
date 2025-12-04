@@ -23,7 +23,8 @@ class MainMenuWidget(QWidget):
         blog_section.setStyleSheet("font-size: 14px; font-weight: bold; margin-top: 20px;")
         layout.addWidget(blog_section)
         
-        # Blog buttons
+        """ Blog buttons """ 
+        # Creat Blog
         create_blog_btn = QPushButton("Create New Blog")
         create_blog_btn.clicked.connect(self.main_window.show_create_blog)
         layout.addWidget(create_blog_btn)
@@ -56,6 +57,20 @@ class MainMenuWidget(QWidget):
         choose_blog_btn = QPushButton("Choose Current Blog for Editing")
         choose_blog_btn.clicked.connect(self.main_window.show_choose_current_blog)
         layout.addWidget(choose_blog_btn)
+
+        """ Post button """
+
+        # Creat Post Button 
+        create_post_btn = QPushButton("Create New Post")
+        create_post_btn.clicked.connect(self.main_window.show_create_post)
+        layout.addWidget(create_post_btn)
+
+        # List Post Button 
+        list_posts_btn = QPushButton("List Posts")
+        list_posts_btn.clicked.connect(self.main_window.show_list_posts)
+        layout.addWidget(list_posts_btn)
+
+
         
         # Logout button
         logout_btn = QPushButton("Logout")
