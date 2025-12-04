@@ -1,4 +1,4 @@
-
+#instead of import all of these we can use sta! like (from PyQt6.QWidget import *)
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QStackedWidget, 
                              QVBoxLayout, QWidget, QMessageBox, QTableView,
                              QPlainTextEdit, QHeaderView, QLabel, 
