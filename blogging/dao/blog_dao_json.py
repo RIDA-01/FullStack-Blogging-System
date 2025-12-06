@@ -98,13 +98,25 @@ class BlogDAOJSON(BlogDAO):
         self._save_blogs()
         return blog
     
-    def delete_blog(self, key):   #remove a blog by ID
+    def delete_blog(self, key):   # remove a blog by ID
         self._ensure_loaded()
+        try:
+            key = int(key)
+        except (TypeError, ValueError):
+            return False
+
         if key in self.blogs:
             del self.blogs[key]
+
             self._save_blogs()
+            if self.autosave:
+                self._load_blogs()
+                self._loaded = True
+
             return True
+
         return False
+
     
     def list_blogs(self):  #returns a list of all Blog objects
         self._ensure_loaded()
