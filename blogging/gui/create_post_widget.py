@@ -1,7 +1,8 @@
-from PyQt6.QtWidgets import *
+from PyQt6.QtWidgets import ( QWidget, QVBoxLayout, QLabel, QLineEdit, QPlainTextEdit, QPushButton, QHBoxLayout)
 from PyQt6.QtCore import Qt
 from blogging.exception.illegal_access_exception import IllegalAccessException
 from blogging.exception.no_current_blog_exception import NoCurrentBlogException
+
 
 class CreatePostWidget(QWidget):
     def __init__(self, main_window):
@@ -11,20 +12,20 @@ class CreatePostWidget(QWidget):
 
     def setup_ui(self):
         layout = QVBoxLayout()
-    
+
         # Title
         title = QLabel("Create New Post")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title.setStyleSheet("font-size: 18px; font-weight: bold; margin: 20px;")
         layout.addWidget(title)
-        
+
         # Post title
         layout.addWidget(QLabel("Post Title:"))
-        self.blog_id_input = QLineEdit()
-        self.blog_id_input.setPlaceholderText("Enter Post Title")
-        layout.addWidget(self.blog_id_input)
+        self.post_title_input = QLineEdit()
+        self.post_title_input.setPlaceholderText("Enter Post Title")
+        layout.addWidget(self.post_title_input)
 
-        # Post Contetnt
+        # Post content
         layout.addWidget(QLabel("Post Text:"))
         self.post_text_input = QPlainTextEdit()
         self.post_text_input.setPlaceholderText("Enter post content")
@@ -33,25 +34,24 @@ class CreatePostWidget(QWidget):
         # Buttons
         buttons_layout = QHBoxLayout()
 
-        # Creat Button
+        # Create button
         create_btn = QPushButton("Create Post")
         create_btn.clicked.connect(self.create_post)
         buttons_layout.addWidget(create_btn)
 
-        # Clear Button
+        # Clear button
         clear_btn = QPushButton("Clear Form")
         clear_btn.clicked.connect(self.clear_form)
         buttons_layout.addWidget(clear_btn)
-        
-        # Back Button
+
+        # Back button
         back_btn = QPushButton("Back to Main Menu")
-        # Back to Edit Blog Menue
         back_btn.clicked.connect(self.main_window.show_main_menu)
         buttons_layout.addWidget(back_btn)
 
         layout.addLayout(buttons_layout)
 
-        # Status Label
+        # Status label
         self.status_label = QLabel("")
         self.status_label.setStyleSheet("margin: 20px;")
         layout.addWidget(self.status_label)
@@ -59,13 +59,13 @@ class CreatePostWidget(QWidget):
         self.setLayout(layout)
 
     def clear_form(self):
-        """Clear all input fields"""
+        """Clear all input fields (keep status message)."""
         self.post_title_input.clear()
         self.post_text_input.clear()
-        self.status_label.setText("")
+        # Do not clear status_label here so success/error messages stay visible
 
     def create_post(self):
-        """Create a new post with the provided data"""
+        """Create a new post with the provided data."""
         title = self.post_title_input.text().strip()
         text = self.post_text_input.toPlainText().strip()
 
@@ -81,14 +81,14 @@ class CreatePostWidget(QWidget):
             return
 
         try:
-            # Same methods in CLI : self.controller.create_post(title, text)
+            # Use controller to create the post
             self.main_window.controller.create_post(title, text)
 
-            # If create_post returns nothing we simply display a success message
+            # Show success message
             self.status_label.setText("Post created successfully.")
             self.status_label.setStyleSheet("color: green; margin: 20px;")
-            
-            # Clear form for next entry
+
+            # Clear inputs but keep the success message
             self.clear_form()
 
         except IllegalAccessException:

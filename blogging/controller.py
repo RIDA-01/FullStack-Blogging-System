@@ -141,21 +141,22 @@ class Controller:
         
         return result  
 
-    def delete_blog(self, blog_id): # story 7
-
-        if self.current_user is None: # checking if already logged in
+    def delete_blog(self, blog_id):  # story 7
+        if self.current_user is None:
             raise IllegalAccessException()
         
-        # checkinng to delete the current blog
         if self.current_blog and self.current_blog.blog_id == blog_id:
-            raise IllegalOperationException()  # Can't update current blog  #can't delete current blog
+            raise IllegalOperationException()
         
-         # Delegate to DAO
         success = self.blog_dao.delete_blog(blog_id)
         if not success:
             raise IllegalOperationException()
-    
+
+        if self.current_blog and self.current_blog.blog_id == blog_id:
+            self.current_blog = None
+
         return True
+
         
     def list_blogs(self): #story 8
 

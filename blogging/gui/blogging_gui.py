@@ -33,8 +33,8 @@ from blogging.gui.delete_post_widget import DeletePostWidget
 class BloggingGUI(QMainWindow):
     def __init__(self):
         super().__init__()
+        Configuration.autosave = True
         self.configuration = Configuration()
-        self.configuration.__class__.autosave = True
         self.controller = Controller()
         
         # Start with smaller login window
@@ -122,10 +122,10 @@ class BloggingGUI(QMainWindow):
         self.resize(500, 400)  # Medium size for search
         
     def show_create_blog(self):
-            """Show create blog screen"""
-            self.stacked_widget.setCurrentWidget(self.create_blog_widget)
-            self.setWindowTitle("Blogging System - Create Blog")
-            self.resize(500, 500)  # Good size for form inputs
+        """Show create blog screen"""
+        self.stacked_widget.setCurrentWidget(self.create_blog_widget)
+        self.setWindowTitle("Blogging System - Create Blog")
+        self.resize(500, 500)  # Good size for form inputs
         
     def show_retrieve_blogs(self):
         """Show retrieve blogs by name screen"""
@@ -166,9 +166,9 @@ class BloggingGUI(QMainWindow):
     Post Section
     """
     def show_create_post(self):
-        create_post_widget = CreatePostWidget(self)
-        self.stacked_widget.addWidget(create_post_widget)
-        self.stacked_widget.setCurrentWidget(create_post_widget)
+        self.stacked_widget.setCurrentWidget(self.create_post_widget)
+        self.setWindowTitle("Blogging System - Create Post")
+        self.resize(700, 500)
 
     def show_list_posts(self):
         self.list_posts_widget.load_posts()
