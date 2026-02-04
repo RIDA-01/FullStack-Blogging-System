@@ -52,28 +52,13 @@ This project implements a complete blogging system developed as part of a univer
 
 
 ##  Installation & Usage
-
-### Prerequisites
-- Python 3.9 or higher
-- pip package manager
-
-### Installation
-## Clone repository
-git clone https://github.com/yourusername/blogging-system-mvc-gui.git
-cd blogging-system-mvc-gui
-
-## Install dependencies
 pip install PyQt6
 
 ## Run the GUI application
-python3 -m blogging gui
+py -m blogging gui
 
-## Or run the CLI prototype
-python3 -m blogging cli
+## Login credentials: 
+username : user
+password: 123456
 
-## Run unit tests
-python -m pytest tests/
 
-## Run specific test modules
-python -m pytest tests/blog_test.py
-python -m pytest tests/post_test.py
