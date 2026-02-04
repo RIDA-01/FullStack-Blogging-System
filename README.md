@@ -49,25 +49,6 @@ This project implements a complete blogging system developed as part of a univer
 | **Data Persistence** | JSON + Pickle | Reliable data storage |
 | **Testing** | unittest Framework | Quality assurance |
 
-##  Project Structure
-blogging-system/
-├── blogging/
-│ ├── main.py # Application entry point
-│ ├── controller.py # Business logic layer
-│ ├── blog.py # Blog domain model (My focus)
-│ ├── post.py # Post domain model
-│ ├── gui/ # PyQt6 interface components
-│ │ ├── blogging_gui.py # Main application window
-│ │ └── [widgets/] # Custom GUI components
-│ ├── dao/ # Data Access Objects
-│ │ ├── blog_dao_json.py
-│ │ └── post_dao_pickle.py
-│ ├── exception/ # Custom exception classes
-│ └── cli/ # Command-line interface
-├── tests/ # Comprehensive test suite
-├── data/ # Persistent storage
-└── requirements.txt # Dependencies
-
 
 
 ##  Installation & Usage
@@ -77,23 +58,22 @@ blogging-system/
 - pip package manager
 
 ### Installation
-# Clone repository
+## Clone repository
 git clone https://github.com/yourusername/blogging-system-mvc-gui.git
 cd blogging-system-mvc-gui
 
-# Install dependencies
+## Install dependencies
 pip install PyQt6
 
-# Run the GUI application
+## Run the GUI application
 python3 -m blogging gui
 
-# Or run the CLI prototype
+## Or run the CLI prototype
 python3 -m blogging cli
 
-
-# Run unit tests
+## Run unit tests
 python -m pytest tests/
 
-# Run specific test modules
+## Run specific test modules
 python -m pytest tests/blog_test.py
 python -m pytest tests/post_test.py
