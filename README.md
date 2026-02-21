@@ -60,5 +60,5 @@ py -m blogging gui
 ## Login credentials: 
 username : user
 password: 123456
-
-
+---
+## Screenshots available in `/screenshots` folder
