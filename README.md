@@ -58,7 +58,8 @@ pip install PyQt6
 py -m blogging gui
 
 ## Login credentials: 
-username : user
+username: user
 password: 123456
+
 ---
 ## Screenshots available in `/screenshots` folder
