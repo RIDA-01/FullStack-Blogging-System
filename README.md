@@ -18,6 +18,7 @@ This project implements a complete blogging system developed as part of a univer
 **Team Project** - Developed collaboratively by 2 computer science students:
 - **Rida** : Blog management module, GUI layout, authentication system, and comprehensive testing suite
 - **Yasaman**: Post management module, text editing interface, and data persistence layer
+  
  We employed pair programming and feature-based development, with regular code reviews and integration sessions because ending up with errors is not in our dictionaries.
 
 ##  Features
@@ -59,6 +60,7 @@ py -m blogging gui
 
 ## Login credentials: 
 username: user
+
 password: 123456
 
 ---
